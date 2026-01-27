@@ -1,0 +1,9 @@
+aiogram>=3.0.0
+sqlalchemy>=2.0.0
+asyncpg
+openai
+python-dotenv
+matplotlib
+pandas
+pydantic-settings
+pydub
