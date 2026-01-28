@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from aris_bot.database.models import User, Transaction, Goal, Diary, Base
-from aris_bot.core.config import settings
+from database.models import User, Transaction, Goal, Diary, Base
+from core.config import settings
 from sqlalchemy import select, update
 from datetime import datetime
 
