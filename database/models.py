@@ -1,6 +1,9 @@
+import os
 from datetime import datetime
 from sqlalchemy import Column, Integer, BigInteger, String, Float, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship, declarative_base
+
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 Base = declarative_base()
 
@@ -55,3 +58,11 @@ class Diary(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     
     user = relationship("User", back_populates="diaries")
+
+engine = create_async_engine(os.getenv('DB_URL'))
+
+async_session = async_sessionmaker(engine, expire_on_commit=False)
+
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
