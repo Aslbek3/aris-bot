@@ -1,18 +1,17 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-from database.models import User, Transaction, Goal, Diary, Base
-from core.config import settings
 from sqlalchemy import select, update
 from datetime import datetime
+# 👇 Biz engine va async_session ni models.py dan import qilyapmiz
+from database.models import User, Transaction, Goal, Diary, Base, engine, async_session
 
-engine = create_async_engine(settings.DATABASE_URL)
-async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+# DIQQAT: Bu yerda engine = ... yaratish shart emas, chunki tepadagi importdan kelyapti.
 
 async def init_db():
+    # models.py dagi engine ishlatiladi
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
 async def add_transaction(user_id, amount, category, trans_type, description):
+    # models.py dagi session ishlatiladi
     async with async_session() as session:
         # Ensure user exists
         user = await session.get(User, user_id)
