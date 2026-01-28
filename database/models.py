@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from sqlalchemy import Column, Integer, BigInteger, String, Float, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship, declarative_base
-
+# 👇 Mana shu importlar sizda yetishmayotgan edi
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 Base = declarative_base()
@@ -10,7 +10,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
     
-    id = Column(BigInteger, primary_key=True)  # Telegram user ID
+    id = Column(BigInteger, primary_key=True)
     username = Column(String(255), nullable=True)
     full_name = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -27,7 +27,7 @@ class Transaction(Base):
     user_id = Column(BigInteger, ForeignKey('users.id'))
     amount = Column(Float, nullable=False)
     category = Column(String(100), nullable=False)
-    type = Column(String(20), nullable=False)  # 'income' or 'expense'
+    type = Column(String(20), nullable=False)
     description = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
@@ -59,6 +59,8 @@ class Diary(Base):
     
     user = relationship("User", back_populates="diaries")
 
+# 👇 ENG MUHIM QISMI (Buni albatta qo'shing)
+# Biz bu yerda to'g'ridan-to'g'ri havolani emas, os.getenv ishlatdik.
 engine = create_async_engine(os.getenv('DB_URL'))
 
 async_session = async_sessionmaker(engine, expire_on_commit=False)
